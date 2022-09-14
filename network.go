@@ -253,6 +253,9 @@ type CNIConfiguration struct {
 	// invocation.
 	Args [][2]string
 
+	// CapabilityArgs (optional) corresponds to the additional capability arguments passed to the cni plugins
+	CapabilityArgs map[string]interface{}
+
 	// BinPath (optional) is a list of directories in which CNI plugin binaries
 	// will be sought. If not provided, defaults to just "/opt/bin/CNI"
 	BinPath []string
@@ -310,10 +313,11 @@ func (cniConf *CNIConfiguration) setDefaults() {
 
 func (cniConf CNIConfiguration) asCNIRuntimeConf() *libcni.RuntimeConf {
 	return &libcni.RuntimeConf{
-		ContainerID: cniConf.containerID,
-		NetNS:       cniConf.netNSPath,
-		IfName:      cniConf.IfName,
-		Args:        cniConf.Args,
+		ContainerID:    cniConf.containerID,
+		NetNS:          cniConf.netNSPath,
+		IfName:         cniConf.IfName,
+		Args:           cniConf.Args,
+		CapabilityArgs: cniConf.CapabilityArgs,
 	}
 }
 
